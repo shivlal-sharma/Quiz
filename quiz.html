@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('image/bg10.jpg') no-repeat center center/cover;
+        }
+
+        .main {
+            padding: 10px 20px;
+            width: 60vw;
+            box-shadow: 0px 0px 10px #003cff;
+            font-size: 1.1rem;
+            border-radius: 10px;
+        }
+
+        .ques {
+            margin-bottom: 10px;
+        }
+
+        .input{
+            margin-bottom: 5px;
+        }
+
+        input {
+            accent-color: green;
+            cursor: pointer;
+        }
+
+        label{
+            cursor: pointer;
+        }
+
+        button {
+            width: 40%;
+            display: block;
+            padding: 3px 10px;
+            background: green;
+            color: #fff;
+            border: none;
+            outline: none;
+            margin: 10px auto;
+            border-radius: 3px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="main">
+            <div class="ques"></div>
+            <div class="input">
+                <input type="radio" id="option1" name="option" value="a">
+                <label for="option1"></label>
+            </div>
+            <div class="input">
+                <input type="radio" id="option2" name="option" value="b">
+                <label for="option2"></label>
+            </div>
+            <div class="input">
+                <input type="radio" id="option3" name="option" value="c">
+                <label for="option3"></label>
+            </div>
+            <div class="input">
+                <input type="radio" id="option4" name="option" value="d">
+                <label for="option4"></label>
+            </div>
+            <button onclick="submitQuestion()">Submit</button>
+        </div>
+    </div>
+
+    <script>
+        let questions = [
+            {
+                'ques': 'Which of the following keywords id used to define a variable in javascript?',
+                'a': 'var',
+                'b': 'let',
+                'c': 'Both a and b',
+                'd': 'None of the above',
+                'correct': 'c'
+            },
+            {
+                'ques': 'Inside which HTML element do we put the JavaScript?',
+                'a': '<javascript>',
+                'b': '<js>',
+                'c': '<script>',
+                'd': '<scripting>',
+                'correct': 'c'
+            },
+            {
+                'ques': 'Which of the following is correct about JavaScript?',
+                'a': 'JavaScript is an Object-Based language',
+                'b': 'JavaScript is Assembly-language',
+                'c': 'JavaScript is an Object-Oriented language',
+                'd': 'JavaScript is a High-level language',
+                'correct': 'a'
+            },
+            {
+                'ques': 'Arrays in JavaScript are defined by which of the following statements?',
+                'a': 'It is an ordered list of values',
+                'b': 'It is an ordered list of objects',
+                'c': 'It is an ordered list of string',
+                'd': 'It is an ordered list of functions',
+                'correct': 'a'
+            },
+            {
+                'ques': 'Which of the following can be used to call a JavaScript Code Snippet?',
+                'a': 'Function/Method',
+                'b': 'Preprocessor',
+                'c': 'Triggering Event',
+                'd': 'RMI',
+                'correct': 'a'
+            },
+            {
+                'ques': 'Which of the below is used in Java script to insert special characters?',
+                'a': '&',
+                'b': '\\',
+                'c': '-',
+                'd': '%',
+                'correct': 'b'
+            },
+            {
+                'ques': 'How does Java Script store dates in objects of Date type?',
+                'a': 'The number of days since January 1st, 1900',
+                'b': 'The number of seconds since January 1st, 1970',
+                'c': 'The number of milliseconds since January 1st, 1970',
+                'd': 'The number of picoseconds since January 1st, 1970',
+                'correct': 'c'
+            },
+            {
+                'ques': 'JavaScript ignores extra spaces',
+                'a': 'True',
+                'b': 'False',
+                'c':'Both a and b',
+                'd':'None of the above',
+                'correct': 'a'
+            },
+            {
+                'ques': 'What language defines the behavior of a web page?',
+                'a': 'HTML',
+                'b': 'CSS',
+                'c': 'XML',
+                'd': 'JavaScript',
+                'correct': 'd'
+            },
+            {
+                'ques': 'Is it possible to declare a variable in Java Script along its type?',
+                'a': 'Yes',
+                'b': 'No',
+                'c':'Both a and b',
+                'd':'None of the above',
+                'correct': 'b'
+            },
+        ];
+
+        let index = 0;
+        let answer;
+        let right = 0;
+        let wrong = 0;
+        let totalQuestion = questions.length;
+        let question = document.querySelector('.ques');
+        let main = document.querySelector('.main');
+        let option = document.querySelectorAll('label');
+        let inputVal = document.querySelectorAll('input');
+
+        const loadQuestion = () => {
+            if (index == totalQuestion) {
+                return endQuiz();
+            }
+            reset();
+            let data = questions[index];
+            question.textContent = `${index + 1}. ${data.ques}`;
+            option[0].textContent = data.a;
+            option[1].textContent = data.b;
+            option[2].textContent = data.c;
+            option[3].textContent = data.d;
+        }
+
+        const submitQuestion = () => {
+            let data = questions[index];
+            let ans = getAnswer();
+            if (ans == data.correct) {
+                right++;
+            }
+            else {
+                wrong++;
+            }
+            inputVal.forEach((input)=>{
+                if(input.checked == true){
+                index++;
+                loadQuestion();
+                }
+                else{
+                    index;
+                }
+            });
+        }
+
+        const getAnswer = () => {
+            let data = questions[index];
+            inputVal.forEach((input) => {
+                if (input.checked) {
+                    answer = input.value;
+                }
+            });
+            return answer;
+        }
+
+        const reset = () => {
+            inputVal.forEach((input) => {
+                if (input.checked) {
+                    input.checked = false;
+                }
+            })
+        }
+
+        const endQuiz = () => {
+            main.innerHTML = `<h3 style="text-align:center">Thanks for submitting the Javascript Quiz.</h3>
+            <h4 style="text-align:center">Your ${(right / totalQuestion) * 100}% are correct!</h4>
+            <button onclick="playAgain()">Play Again</button>`;
+        }
+
+        const playAgain = ()=>{
+            location.replace('quiz.html');
+        }
+
+        loadQuestion();
+    </script>
+</body>
+
+</html>
